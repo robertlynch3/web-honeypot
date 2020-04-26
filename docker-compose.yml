@@ -1,0 +1,24 @@
+version: '2'
+services:
+  mysql:
+    container_name: database
+    restart: always
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 'honeypotR00t'
+      MYSQL_ROOT_HOST: '%'
+    volumes:
+      - ./mysql:/docker-entrypoint-initdb.d/:ro
+    ports:
+        - "3306:3306"
+  flask:
+    depends_on:
+        - mysql
+    build:
+        context: ./
+        dockerfile: app/Dockerfile
+    container_name: web
+    ports:
+        - "80:80"
+volumes:
+  databasevolume:
