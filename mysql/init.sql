@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `login_attempts`(
     `ipAddress` varchar(15) NOT NULL,
     `username` tinytext,
     `password` tinytext,
+    `host` tinytext,
     `useragent` mediumtext,
     `date` int NOT NULL,
     PRIMARY KEY (`attemptID`),
@@ -18,6 +19,7 @@ CREATE TABLE IF NOT EXISTS `login_attempts`(
 CREATE TABLE IF NOT EXISTS `loads`(
     `loadID` int AUTO_INCREMENT,
     `ipAddress` varchar(15) NOT NULL,
+    `host` tinytext,
     `useragent` mediumtext,
     `location` tinytext,
     `date` int NOT NULL,

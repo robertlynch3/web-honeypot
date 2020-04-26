@@ -30,7 +30,7 @@ def index():
             remoteIP=request.headers['X-Forwarded-For']
         else:
             remoteIP=request.remote_addr
-        post(ipAddress=remoteIP, username=username, password=password, userAgent=request.user_agent)
+        post(ipAddress=remoteIP, host=request.headers['host'], username=username, password=password, userAgent=request.user_agent)
         flash("Incorrect Credentials",'danger')
         return render_template('login.html')
     else:
@@ -39,7 +39,7 @@ def index():
             remoteIP=request.headers['X-Forwarded-For']
         else:
             remoteIP=request.remote_addr
-        get(ipAddress=remoteIP, userAgent=request.user_agent, location='index')
+        get(ipAddress=remoteIP, host=request.headers['host'], userAgent=request.user_agent, location='index')
         return render_template('login.html')
 
 #redirects any locations to login
@@ -54,7 +54,7 @@ def location(loco):
             remoteIP=request.headers['X-Forwarded-For']
         else:
             remoteIP=request.remote_addr
-        post(ipAddress=remoteIP, username=username, password=password, userAgent=request.user_agent)
+        post(ipAddress=remoteIP, host=request.headers['host'], username=username, password=password, userAgent=request.user_agent)
         flash("Incorrect Credentials",'danger')
         return render_template('login.html')
     else:
@@ -63,7 +63,7 @@ def location(loco):
             remoteIP=request.headers['X-Forwarded-For']
         else:
             remoteIP=request.remote_addr
-        get(ipAddress=remoteIP, userAgent=request.user_agent, location=loco)
+        get(ipAddress=remoteIP, host=request.headers['host'], userAgent=request.user_agent, location=loco)
         return render_template('login.html')
 
 #Static login page
@@ -78,7 +78,7 @@ def login():
             remoteIP=request.headers['X-Forwarded-For']
         else:
             remoteIP=request.remote_addr
-        post(ipAddress=remoteIP, username=username, password=password, userAgent=request.user_agent)
+        post(ipAddress=remoteIP, host=request.headers['host'], username=username, password=password, userAgent=request.user_agent)
         flash("Incorrect Credentials",'danger')
         return render_template('login.html')
     else:
@@ -87,12 +87,12 @@ def login():
             remoteIP=request.headers['X-Forwarded-For']
         else:
             remoteIP=request.remote_addr
-        get(ipAddress=remoteIP, userAgent=request.user_agent, location='login')
+        get(ipAddress=remoteIP, host=request.headers['host'], userAgent=request.user_agent, location='login')
         return render_template('login.html')
 
 
 # Database component
-def get(ipAddress, userAgent, location):
+def get(ipAddress, userAgent, location, host):
     if app.debug==True:
         return
     #mydb = mysql.connector.connect(**dbconfig)
@@ -105,7 +105,7 @@ def get(ipAddress, userAgent, location):
         #if the IP is not in the address table
         cursor.execute("INSERT INTO addresses (ipAddress) VALUES (\'{}\')".format(ipAddress))
     #inserts into the load table. loads date as POSIX time
-    cursor.execute("INSERT INTO loads (ipAddress, userAgent, location, date) VALUES (\'{}\', \'{}\', \'{}\',{}) ".format(ipAddress, userAgent, location, int(time())))
+    cursor.execute("INSERT INTO loads (ipAddress, userAgent, location, date, host) VALUES (\'{}\', \'{}\', \'{}\',{}, \'{}\') ".format(ipAddress, userAgent, location, int(time()), host))
     mydb.commit()
     cursor.close()
     mydb.close()
@@ -123,7 +123,7 @@ def post(ipAddress, username, password, userAgent):
         #if the IP is not in the address table
         cursor.execute("INSERT INTO addresses ipAddress VALUES \'{}\'".format(ipAddress))
     #inserts into the load table. loads date as POSIX time
-    cursor.execute("INSERT INTO login_attempts (ipAddress, username, password, userAgent, date) VALUES (\'{}\', \'{}\', \'{}\', \'{}\',{}) ".format(ipAddress, username, password, userAgent, int(time())))
+    cursor.execute("INSERT INTO login_attempts (ipAddress, username, password, userAgent, date, host) VALUES (\'{}\', \'{}\', \'{}\', \'{}\',{}, \'{}\') ".format(ipAddress, username, password, userAgent, int(time()), host))
     mydb.commit()
     
     ### insert code to count how many times an IP has tried to login
