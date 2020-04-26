@@ -12,6 +12,13 @@ docker-compose build --parallel
 docker-compose up -d
 ```
 
+Until I can get Docker to initialize with the SQL file, you will have to run:
+```bash
+docker exec -i -t database /bin/bash
+mysql -uroot -p honeypot < docker-entrypoint-initdb.d/init.sql
+mysql -uroot -p mysql < docker-entrypoint-initdb.d/init.sql
+```
+
 ## Local
 Make sure Python3, Pip3 and MySQL are already installed
 
@@ -22,7 +29,12 @@ python3 app/app.py
 ```
 
 # Screenshots
-
+![Index](docs/index.png)
+Default index
+![Failed Login](docs/failed_login.png)
+After a user pushes a login, it displays `Incorrect Credentials`
+![Database Entry](docs/sql.png)
+Entries in the database, I've censored my IP address.
 
 # Future Enhancements
 I am planning on adding Grafana to visualize the data
