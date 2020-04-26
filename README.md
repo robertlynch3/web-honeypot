@@ -29,11 +29,11 @@ python3 app/app.py
 ```
 
 # Screenshots
-![Index](docs/index.png)
+![Index](docs/index.png)<br>
 Default index
-![Failed Login](docs/failed_login.png)
+![Failed Login](docs/failed_login.png)<br>
 After a user pushes a login, it displays `Incorrect Credentials`
-![Database Entry](docs/sql.png)
+![Database Entry](docs/sql.png)<br>
 Entries in the database, I've censored my IP address.
 
 # Future Enhancements
