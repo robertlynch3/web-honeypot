@@ -25,11 +25,21 @@ def index():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        post(ipAddress=request.remote_addr, username=username, password=password, userAgent=request.user_agent)
+        #if you are running through a reverse proxy and please add the header `X-Forwarded-For`
+        if 'X-Forwarded-For' in request.headers:
+            remoteIP=request.headers['X-Forwarded-For']
+        else:
+            remoteIP=request.remote_addr
+        post(ipAddress=remoteIP, username=username, password=password, userAgent=request.user_agent)
         flash("Incorrect Credentials",'danger')
         return render_template('login.html')
     else:
-        get(ipAddress=request.remote_addr, userAgent=request.user_agent, location='index')
+        #if you are running through a reverse proxy and please add the header `X-Forwarded-For`
+        if 'X-Forwarded-For' in request.headers:
+            remoteIP=request.headers['X-Forwarded-For']
+        else:
+            remoteIP=request.remote_addr
+        get(ipAddress=remoteIP, userAgent=request.user_agent, location='index')
         return render_template('login.html')
 
 #redirects any locations to login
@@ -38,11 +48,22 @@ def location(loco):
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        post(ipAddress=request.remote_addr, username=username, password=password, userAgent=request.user_agent)
+        
+        #if you are running through a reverse proxy and please add the header `X-Forwarded-For`
+        if 'X-Forwarded-For' in request.headers:
+            remoteIP=request.headers['X-Forwarded-For']
+        else:
+            remoteIP=request.remote_addr
+        post(ipAddress=remoteIP, username=username, password=password, userAgent=request.user_agent)
         flash("Incorrect Credentials",'danger')
         return render_template('login.html')
     else:
-        get(ipAddress=request.remote_addr, userAgent=request.user_agent, location=loco)
+        #if you are running through a reverse proxy and please add the header `X-Forwarded-For`
+        if 'X-Forwarded-For' in request.headers:
+            remoteIP=request.headers['X-Forwarded-For']
+        else:
+            remoteIP=request.remote_addr
+        get(ipAddress=remoteIP, userAgent=request.user_agent, location=loco)
         return render_template('login.html')
 
 #Static login page
@@ -51,11 +72,22 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        post(ipAddress=request.remote_addr, username=username, password=password, userAgent=request.user_agent)
+
+        #if you are running through a reverse proxy and please add the header `X-Forwarded-For`
+        if 'X-Forwarded-For' in request.headers:
+            remoteIP=request.headers['X-Forwarded-For']
+        else:
+            remoteIP=request.remote_addr
+        post(ipAddress=remoteIP, username=username, password=password, userAgent=request.user_agent)
         flash("Incorrect Credentials",'danger')
         return render_template('login.html')
     else:
-        get(ipAddress=request.remote_addr, userAgent=request.user_agent, location='login')
+        #if you are running through a reverse proxy and please add the header `X-Forwarded-For`
+        if 'X-Forwarded-For' in request.headers:
+            remoteIP=request.headers['X-Forwarded-For']
+        else:
+            remoteIP=request.remote_addr
+        get(ipAddress=remoteIP, userAgent=request.user_agent, location='login')
         return render_template('login.html')
 
 
