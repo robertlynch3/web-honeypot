@@ -21,5 +21,8 @@ mysql -u < mysql/db.sql
 python3 app/app.py
 ```
 
+# Screenshots
+
+
 # Future Enhancements
 I am planning on adding Grafana to visualize the data
