@@ -30,7 +30,7 @@ def index():
             remoteIP=request.headers['X-Forwarded-For']
         else:
             remoteIP=request.remote_addr
-        post(ipAddress=remoteIP, host=request.headers['host'], username=username, password=password, userAgent=request.user_agent)
+        post(ipAddress=remoteIP, host=request.headers.get('host'), username=username, password=password, userAgent=request.user_agent)
         flash("Incorrect Credentials",'danger')
         return render_template('login.html')
     else:
@@ -39,7 +39,7 @@ def index():
             remoteIP=request.headers['X-Forwarded-For']
         else:
             remoteIP=request.remote_addr
-        get(ipAddress=remoteIP, host=request.headers['host'], userAgent=request.user_agent, location='index')
+        get(ipAddress=remoteIP, host=request.headers.get('host'), userAgent=request.user_agent, location='index')
         return render_template('login.html')
 
 #redirects any locations to login
@@ -54,7 +54,7 @@ def location(loco):
             remoteIP=request.headers['X-Forwarded-For']
         else:
             remoteIP=request.remote_addr
-        post(ipAddress=remoteIP, host=request.headers['host'], username=username, password=password, userAgent=request.user_agent)
+        post(ipAddress=remoteIP, host=request.headers.get('host'), username=username, password=password, userAgent=request.user_agent)
         flash("Incorrect Credentials",'danger')
         return render_template('login.html')
     else:
@@ -63,7 +63,7 @@ def location(loco):
             remoteIP=request.headers['X-Forwarded-For']
         else:
             remoteIP=request.remote_addr
-        get(ipAddress=remoteIP, host=request.headers['host'], userAgent=request.user_agent, location=loco)
+        get(ipAddress=remoteIP, host=request.headers.get('host'), userAgent=request.user_agent, location=loco)
         return render_template('login.html')
 
 #Static login page
@@ -78,7 +78,7 @@ def login():
             remoteIP=request.headers['X-Forwarded-For']
         else:
             remoteIP=request.remote_addr
-        post(ipAddress=remoteIP, host=request.headers['host'], username=username, password=password, userAgent=request.user_agent)
+        post(ipAddress=remoteIP, host=request.headers.get('host'), username=username, password=password, userAgent=request.user_agent)
         flash("Incorrect Credentials",'danger')
         return render_template('login.html')
     else:
@@ -87,12 +87,12 @@ def login():
             remoteIP=request.headers['X-Forwarded-For']
         else:
             remoteIP=request.remote_addr
-        get(ipAddress=remoteIP, host=request.headers['host'], userAgent=request.user_agent, location='login')
+        get(ipAddress=remoteIP, host=request.headers.get('host'), userAgent=request.user_agent, location='login')
         return render_template('login.html')
 
 
 # Database component
-def get(ipAddress, host, userAgent, location, host):
+def get(ipAddress, userAgent, location, host):
     if app.debug==True:
         return
     #mydb = mysql.connector.connect(**dbconfig)
@@ -110,7 +110,7 @@ def get(ipAddress, host, userAgent, location, host):
     cursor.close()
     mydb.close()
 
-def post(ipAddress, host, username, password, userAgent):
+def post(ipAddress, username, password, userAgent):
     if app.debug==True:
         return
     mydb = mysql.connector.connect(host="database",user='root', password='honeypotR00t', database="honeypot", auth_plugin='mysql_native_password')
