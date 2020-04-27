@@ -92,7 +92,7 @@ def login():
 
 
 # Database component
-def get(ipAddress, userAgent, location, host):
+def get(ipAddress, host, userAgent, location, host):
     if app.debug==True:
         return
     #mydb = mysql.connector.connect(**dbconfig)
@@ -110,7 +110,7 @@ def get(ipAddress, userAgent, location, host):
     cursor.close()
     mydb.close()
 
-def post(ipAddress, username, password, userAgent):
+def post(ipAddress, host, username, password, userAgent):
     if app.debug==True:
         return
     mydb = mysql.connector.connect(host="database",user='root', password='honeypotR00t', database="honeypot", auth_plugin='mysql_native_password')
