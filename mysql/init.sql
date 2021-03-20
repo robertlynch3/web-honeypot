@@ -1,5 +1,6 @@
 CREATE DATABASE IF NOT EXISTS `honeypot`;
 
+USE honeypot;
 CREATE TABLE IF NOT EXISTS `addresses`(
     `ipAddress` varchar(15) NOT NULL,
     PRIMARY KEY (`ipAddress`),
