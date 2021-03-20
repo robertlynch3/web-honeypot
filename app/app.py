@@ -1,13 +1,14 @@
 from flask import Flask, render_template, flash, request, redirect, url_for
 from time import time
+from os import environ
 import mysql.connector
 
 
 
 dbconfig = {
         'user': 'root',
-        'password': 'honeypotR00t',
-        'host': 'mysql',
+        'password': environ.get('MYSQL_ROOT_PASSWORD'),
+        'host': 'database',
         'database': 'honeypot',
         'auth_plugin':'mysql_native_password'
     }
@@ -20,7 +21,7 @@ app = Flask(__name__, template_folder="templates")
 app.secret_key='secret'
 
 #redirects index to login
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/',defaults={'u_path': ''}, methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         username = request.form['username']
@@ -42,9 +43,9 @@ def index():
         get(ipAddress=remoteIP, host=request.headers.get('host'), userAgent=request.user_agent, location='index')
         return render_template('login.html')
 
-#redirects any locations to login
-@app.route('/<string:loco>', methods=['GET', 'POST'])
-def location(loco):
+#for any locations for /
+@app.route('/<path:u_path>', methods=['GET', 'POST'])
+def location(u_path):
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -63,8 +64,11 @@ def location(loco):
             remoteIP=request.headers['X-Forwarded-For']
         else:
             remoteIP=request.remote_addr
-        get(ipAddress=remoteIP, host=request.headers.get('host'), userAgent=request.user_agent, location=loco)
+        get(ipAddress=remoteIP, host=request.headers.get('host'), userAgent=request.user_agent, location=u_path)
         return render_template('login.html')
+
+
+
 
 #Static login page
 @app.route('/login', methods=['GET', 'POST'])
@@ -95,8 +99,8 @@ def login():
 def get(ipAddress, userAgent, location, host):
     if app.debug==True:
         return
-    #mydb = mysql.connector.connect(**dbconfig)
-    mydb = mysql.connector.connect(host="database",user='root', password='honeypotR00t', database="honeypot", auth_plugin='mysql_native_password')
+    mydb = mysql.connector.connect(**dbconfig)
+    #mydb = mysql.connector.connect(host="mysql", user='root', password='honeypotR00t', database="honeypot", auth_plugin='mysql_native_password')
     cursor=mydb.cursor(buffered=True,dictionary=True)
     
     #checks if the IP already exists
@@ -110,11 +114,11 @@ def get(ipAddress, userAgent, location, host):
     cursor.close()
     mydb.close()
 
-def post(ipAddress, username, password, userAgent):
+def post(ipAddress, host, username, password, userAgent):
     if app.debug==True:
         return
-    mydb = mysql.connector.connect(host="database",user='root', password='honeypotR00t', database="honeypot", auth_plugin='mysql_native_password')
-    #mydb = mysql.connector.connect(**dbconfig)
+    #mydb = mysql.connector.connect(host="mysql",user='root', password='honeypotR00t', database="honeypot", auth_plugin='mysql_native_password')
+    mydb = mysql.connector.connect(**dbconfig)
     cursor=mydb.cursor(buffered=True,dictionary=True)
     
     #checks if the IP already exists
@@ -134,4 +138,4 @@ def post(ipAddress, username, password, userAgent):
 
 
 if __name__=="__main__":
-    app.run(host="0.0.0.0", port=80)
+    app.run(host="0.0.0.0", port=environ.get('PORT'))
