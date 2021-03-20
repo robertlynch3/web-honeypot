@@ -39,5 +39,11 @@ services:
       - ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
       - ./grafana/dashboard.yml:/etc/grafana/provisioning/dashboards/dashboard.yml
       - ./grafana/honeypot-dashboard.json:/etc/grafana/provisioning/dashboards/dashboard.json
+      - grafanavolume_data/:/var/lib/grafana
+      - grafanavolume_conf/:/etc/grafana
+      - grafanavolume_log/:/var/log/grafana
 volumes:
   databasevolume:
+  grafanavolume_data:
+  grafanavolume_conf:
+  grafanavolume_log:
