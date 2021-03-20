@@ -21,7 +21,7 @@ app = Flask(__name__, template_folder="templates")
 app.secret_key='secret'
 
 #redirects index to login
-@app.route('/',defaults={'u_path': ''}, methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         username = request.form['username']
@@ -42,6 +42,7 @@ def index():
             remoteIP=request.remote_addr
         get(ipAddress=remoteIP, host=request.headers.get('host'), userAgent=request.user_agent, location='index')
         return render_template('login.html')
+
 
 #for any locations for /
 @app.route('/<path:u_path>', methods=['GET', 'POST'])
