@@ -1,24 +1,43 @@
-version: '2'
+version: '3.4'
+x-common-variables: &common-variables
+  MYSQL_ROOT_PASSWORD: 'honeypotR00t'
+  MYSQL_ROOT_HOST: '%'
 services:
-  mysql:
+  database:
     container_name: database
     restart: always
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: 'honeypotR00t'
-      MYSQL_ROOT_HOST: '%'
+      <<: *common-variables
     volumes:
       - ./mysql:/docker-entrypoint-initdb.d/:ro
+      - databasevolume:/var/lib/mysql
     ports:
         - "3306:3306"
-  flask:
+  web:
     depends_on:
-        - mysql
+        - database
     build:
         context: ./
         dockerfile: app/Dockerfile
     container_name: web
+    environment:
+      <<: *common-variables
+      PORT: '80'
     ports:
         - "80:80"
+  grafana:
+    container_name: grafana
+    restart: always
+    image: grafana/grafana:latest
+    environment:
+      <<: *common-variables
+      DB_HOST: "database"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      - ./grafana/dashboard.yml:/etc/grafana/provisioning/dashboards/dashboard.yml
+      - ./grafana/honeypot-dashboard.json:/etc/grafana/provisioning/dashboards/dashboard.json
 volumes:
   databasevolume:

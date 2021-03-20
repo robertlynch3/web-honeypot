@@ -1,0 +1,11 @@
+apiVersion: 1
+datasources:
+  - name: MySQL
+    default: true
+    type: mysql
+    url: $DB_HOST
+    database: honeypot
+    user: root
+    editable: true
+    secureJsonData:
+      password: $MYSQL_ROOT_PASSWORD
