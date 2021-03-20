@@ -4,27 +4,35 @@ I had a few ports open to the web at home that connected to a reverse proxy. In 
 # Installation
 There are two paths to use this: locally or via Docker. Docker has an issue in that it masquerades IPs coming from the outside. This means that any login attemt will have the Docker IP of your host, which kind of defeats the purpose. That being said, you if you run a reverse proxy in front of the application, you could pass through `x-forwarded-for` (which I do). If this is running open, then the Flask app needs to get `remote_addr` inorder for it to be effective.
 
+### Clone the repo
+In either case, you need to clone the repo.
+```
+git clone https://github.com/rml596/web-honeypot.git
+```
+
 ## Docker
-I am still in the process of getting the SQL DB to load its init file on bring up, so at this point you will still need to manually import the MySQL DB
-```bash
-cd web-honeypot
-docker-compose build --parallel
+To run via Docker, make sure Docker and Docker Compose are installed.<br>
+Edit the `docker-compose.yml` the variables for `MYSQL_ROOT_PASSWORD` and `web/PORT` as needed. 
+<br><br>
+You can also remove the `services/database/ports` values if you don't want to expose MySQL (removing this is recommended). <br>
+If you have multiple interfaces on your machine (Exp - internal and external), you can set the ports to listen on a specific IP. 
+Example
+```yml
+ports:
+      - "10.0.0.1:3000:3000"
+```
+Once your `docker-compose.yml` is configured, you can start the containers.
+```
 docker-compose up -d
 ```
 
-Until I can get Docker to initialize with the SQL file, you will have to run:
-```bash
-docker exec -i -t database /bin/bash
-mysql -uroot -p honeypot < docker-entrypoint-initdb.d/init.sql
-mysql -uroot -p mysql < docker-entrypoint-initdb.d/init.sql
-```
-
 ## Local
+The directions for running locally will only bring up the honeypot, not the          
 Make sure Python3, Pip3 and MySQL are already installed
 
 ```bash
 pip3 install -r app/requirements.txt
-mysql -u < mysql/db.sql
+mysql -u < mysql/init.sql
 python3 app/app.py
 ```
 
@@ -35,6 +43,8 @@ Default index
 After a user pushes a login, it displays `Incorrect Credentials`
 ![Database Entry](docs/sql.png)<br>
 Entries in the database, I've censored my IP address.
+![Grafana Dashboard](docs/grafana.png)<br>
+Grafana dashboard.
 
 # Future Enhancements
-I am planning on adding Grafana to visualize the data
+For enhancements open an [Issue](https://github.com/rml596/web-honeypot/issues)
