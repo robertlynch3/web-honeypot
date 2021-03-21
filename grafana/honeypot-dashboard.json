@@ -7,7 +7,7 @@
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations & Alerts", 
+        "name": "Annotations & Alerts",
         "type": "dashboard"
       }
     ]
@@ -41,7 +41,7 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 6,
+        "w": 4,
         "x": 0,
         "y": 0
       },
@@ -147,7 +147,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 223
+                "value": 183
               }
             ]
           },
@@ -159,7 +159,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 269
+                "value": 265
               }
             ]
           },
@@ -171,7 +171,19 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 310
+                "value": 218
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "User Agent"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 970
               }
             ]
           }
@@ -179,8 +191,8 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 13,
-        "x": 6,
+        "w": 16,
+        "x": 4,
         "y": 0
       },
       "id": 4,
@@ -188,8 +200,8 @@
         "showHeader": true,
         "sortBy": [
           {
-            "desc": false,
-            "displayName": "time"
+            "desc": true,
+            "displayName": "Date/Time"
           }
         ]
       },
@@ -201,7 +213,7 @@
           "metricColumn": "none",
           "queryType": "randomWalk",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date AS \"time\",\n  ipAddress as 'IP Address',\n  host as 'Web Host',\n  location as 'Location',\n  useragent as 'User Agent'\nFROM loads\nWHERE\n  $__unixEpochFilter(date)",
+          "rawSql": "SELECT\n  date AS \"time\",\n  ipAddress as 'IP Address',\n  host as 'Web Host',\n  location as 'Location',\n  useragent as 'User Agent'\nFROM loads\nWHERE\n  $__unixEpochFilter(date)\nORDER by date DESC;",
           "refId": "A",
           "select": [
             [
@@ -258,13 +270,14 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 5,
-        "x": 19,
+        "w": 4,
+        "x": 20,
         "y": 0
       },
       "id": 6,
       "options": {
-        "showHeader": true
+        "showHeader": true,
+        "sortBy": []
       },
       "pluginVersion": "7.4.5",
       "targets": [
@@ -324,7 +337,7 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 6,
+        "w": 4,
         "x": 0,
         "y": 9
       },
@@ -450,8 +463,8 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 13,
-        "x": 6,
+        "w": 16,
+        "x": 4,
         "y": 9
       },
       "id": 5,
@@ -467,7 +480,7 @@
           "metricColumn": "none",
           "queryType": "randomWalk",
           "rawQuery": true,
-          "rawSql": "SELECT\n  date AS 'time',\n  ipAddress as 'IP Address',\n  host as 'Web Host',\n  username as 'Username',\n  password as 'Password'\nFROM login_attempts\nWHERE\n  $__unixEpochFilter(date)",
+          "rawSql": "SELECT\n  date AS 'time',\n  ipAddress as 'IP Address',\n  host as 'Web Host',\n  username as 'Username',\n  password as 'Password'\nFROM login_attempts\nWHERE\n  $__unixEpochFilter(date)\nORDER by date DESC;",
           "refId": "A",
           "select": [
             [
@@ -524,8 +537,8 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 5,
-        "x": 19,
+        "w": 4,
+        "x": 20,
         "y": 9
       },
       "id": 7,
@@ -564,7 +577,7 @@
           ]
         }
       ],
-      "title": "Logins by IP",
+      "title": "Loads by IP",
       "type": "table"
     },
     {
@@ -794,9 +807,16 @@
   "schemaVersion": 27,
   "style": "dark",
   "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-2d",
+    "to": "now"
+  },
   "timepicker": {},
   "timezone": "",
-  "title": "Honeypot",
+  "title": "Flask Honeypot",
   "uid": "UpbJ1KQGz",
-  "version": 2
+  "version": 1
 }
