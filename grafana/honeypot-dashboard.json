@@ -564,7 +564,7 @@
           ]
         }
       ],
-      "title": "Loads by IP",
+      "title": "Logins by IP",
       "type": "table"
     },
     {
