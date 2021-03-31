@@ -33,6 +33,20 @@ services:
       PORT: '80'
     ports:
         - "80:80"
+  api:
+    depends_on:
+      - database
+    build:
+        context: ./
+        dockerfile: api/Dockerfile
+    container_name: api
+    restart: always
+    environment:
+      <<: *common-variables
+      API_TOKEN: "InsertSecureAPIkeyInThisVariable"
+      PORT: '81'
+    ports:
+        - "81:81"
   grafana:
     container_name: grafana
     restart: always
