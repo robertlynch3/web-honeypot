@@ -1,3 +1,7 @@
+# honeypot/app.py
+# https://github.com/rml596/web-honeypot
+
+
 from flask import Flask, render_template, flash, request, redirect, url_for
 from time import time
 from os import environ
@@ -8,7 +12,7 @@ import mysql.connector
 dbconfig = {
         'user': 'root',
         'password': environ.get('MYSQL_ROOT_PASSWORD'),
-        'host': 'database',
+        'host': environ.get('DATABASE_HOST'),
         'database': 'honeypot',
         'auth_plugin':'mysql_native_password'
     }
@@ -94,6 +98,7 @@ def login():
             remoteIP=request.remote_addr
         get(ipAddress=remoteIP, host=request.headers.get('host'), userAgent=request.user_agent, location='login')
         return render_template('login.html')
+
 
 
 # Database component

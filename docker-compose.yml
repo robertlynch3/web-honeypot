@@ -1,7 +1,12 @@
+# Web-honeypot
+# Robert Lynch - rob@rlyn.ch
+# March 2021
+
 version: '3.4'
 x-common-variables: &common-variables
   MYSQL_ROOT_PASSWORD: 'honeypotR00t'
-  MYSQL_ROOT_HOST: '%'
+  DATABASE_HOST: 'database'
+
 services:
   database:
     container_name: database
@@ -9,18 +14,20 @@ services:
     image: mysql:latest
     environment:
       <<: *common-variables
+      MYSQL_ROOT_HOST: '%'
     volumes:
       - ./mysql:/docker-entrypoint-initdb.d/:ro
       - databasevolume:/var/lib/mysql
     ports:
         - "3306:3306"
-  web:
+  honeypot:
     depends_on:
         - database
     build:
         context: ./
-        dockerfile: app/Dockerfile
-    container_name: web
+        dockerfile: honeypot/Dockerfile
+    container_name: honeypot
+    restart: always
     environment:
       <<: *common-variables
       PORT: '80'
@@ -29,6 +36,8 @@ services:
   grafana:
     container_name: grafana
     restart: always
+    depends_on:
+        - database
     image: grafana/grafana:latest
     environment:
       <<: *common-variables
