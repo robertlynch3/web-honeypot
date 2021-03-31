@@ -35,6 +35,12 @@ pip3 install -r app/requirements.txt
 mysql -u < mysql/init.sql
 python3 app/app.py
 ```
+# Usage
+## Grafana
+The Grafana dashboard is running in a container. Normally, the container runs on port 3000. You can access it via [http://host-ip:3000](http://host-ip:3000).
+
+## API
+The API runs on [http://host-ip:port/api](http://host-ip:port/api). Swagger Documentation can be viewed at [http://host-ip:port/api/docs](http://host-ip:port/api/docs).
 
 # Screenshots
 ![Index](docs/index.png)<br>
